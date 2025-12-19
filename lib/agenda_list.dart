@@ -26,10 +26,10 @@ class _AgendaListState extends State<AgendaList> {
     });
   }
 
-  void _delete(int id) async {
+  void _delete(int id) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Hapus Agenda'),
         content: const Text('Apakah Anda yakin ingin menghapus agenda ini?'),
         shape: RoundedRectangleBorder(
@@ -37,21 +37,32 @@ class _AgendaListState extends State<AgendaList> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Batal'),
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(context);
-              await _service.delete(id);
-              _refresh();
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Agenda berhasil dihapus'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+              Navigator.pop(dialogContext);
+              try {
+                await _service.delete(id);
+                if (mounted) {
+                  _refresh();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Agenda berhasil dihapus'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Gagal menghapus: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               }
             },
             child: const Text('Hapus', style: TextStyle(color: Colors.red)),
