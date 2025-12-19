@@ -51,40 +51,126 @@ class _AgendaFormState extends State<AgendaForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.agenda == null ? 'Tambah Agenda' : 'Edit Agenda'),
+        title: Text(widget.agenda == null ? '✨ Tambah Agenda' : '✏️ Edit Agenda'),
+        elevation: 0,
+        backgroundColor: const Color(0xFF3B82F6),
+        foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _judulController,
-                decoration: const InputDecoration(labelText: 'Judul'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Judul tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _keteranganController,
-                decoration: const InputDecoration(labelText: 'Keterangan'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Keterangan tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submit,
-                child: const Text('Simpan'),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Text(
+                  'Judul Agenda',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _judulController,
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan judul agenda',
+                    prefixIcon: const Icon(Icons.title, color: Color(0xFF3B82F6)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF3B82F6),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Judul tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Keterangan',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _keteranganController,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan keterangan agenda',
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(bottom: 80),
+                      child: Icon(Icons.description, color: Color(0xFF3B82F6)),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF3B82F6),
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Keterangan tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close),
+                        label: const Text('Batal'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[300],
+                          foregroundColor: Colors.black87,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _submit,
+                        icon: const Icon(Icons.check),
+                        label: const Text('Simpan'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF3B82F6),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
